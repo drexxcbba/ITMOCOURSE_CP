@@ -2,6 +2,42 @@
 
 using namespace std;
 
+void radixSort(vector< pair< pair<int, int>, int> > &a){
+	int n = a.size();
+	{
+    	vector<int> count (n);
+	  	for (auto x: a){
+			count[x.first.second]++;
+		}
+    	vector< pair< pair<int, int>, int> > new_a (n);
+    	vector<int> pos (n);
+    	pos[0] = 0;
+    	for(int i = 1; i < n; i++) pos[i] = pos[i - 1] + count[i - 1];
+    	for(auto x: a){
+      		int i = x.first.second;
+      		new_a[pos[i]] = x;
+      		pos[i]++;
+    	}
+    	a = new_a;
+  	}
+  	{
+    	vector<int> count (n);
+	 	for (auto x: a){
+		  	count[x.first.first]++;
+	  	}
+    	vector< pair< pair<int, int>, int> > new_a (n);
+   		vector<int> pos (n);
+   		pos[0] = 0;
+    	for(int i = 1; i < n; i++) pos[i] = pos[i - 1] + count[i - 1];
+    	for(auto x: a){
+    	  int i = x.first.first;
+      	  new_a[pos[i]] = x;
+      	  pos[i]++;
+   	    }
+      	a = new_a;
+  	}
+}
+
 int main(){
 	
 	string s;
@@ -34,7 +70,10 @@ int main(){
 		for (int i = 0; i < n; i++){
 			a[i] = {{c[i], c[(i + (1 << k)) % n]}, i};
 		}
-		sort(a.begin(), a.end());
+		
+		//Radix
+		radixSort(a);
+		
 		for(int i = 0; i < n; i++) p[i] = a[i].second;
 		c[p[0]] = 0;
 		for(int i = 1; i < n; i++){
