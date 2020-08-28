@@ -1,0 +1,1 @@
+Test to verify if git is still configured in this folder.
